@@ -1,4 +1,4 @@
-import { validateCarPlate, validateEmail, validateName } from "../src/helpers/validate";
+import { validateCarPlate, validateEmail, validateName } from "../../src/helpers/validate";
 
 // Name
 test.each([

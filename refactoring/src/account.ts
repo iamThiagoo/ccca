@@ -1,5 +1,5 @@
 import { IAccount } from "./@types";
-import { createDriverAccount, createPassengerAccount, userExists } from "./accountDatabase";
+import { createDriverAccount, createPassengerAccount, userExists, getAccountById } from "./accountDatabase";
 import { validateCarPlate, validateEmail, validateName } from "./helpers/validate";
 import { validateCpf } from "./helpers/validateCpf";
 
@@ -8,6 +8,7 @@ export async function createAccount(input: IAccount) : Promise<{accountId: strin
     if (!validateCpf(input.cpf)) throw new Error('CPF inválido!');
     if (!validateEmail(input.email)) throw new Error('Email inválido!');
     if (await userExists(input.email)) throw new Error('Usuário já existe!');
+    if (!input.password) throw new Error('Senha não informada!');
     const id = crypto.randomUUID();
     if (input.isDriver && input.carPlate) {
         if (!validateCarPlate(input.carPlate)) {
@@ -20,6 +21,6 @@ export async function createAccount(input: IAccount) : Promise<{accountId: strin
     return {accountId: id}
 }
 
-export async function getAccountById(id: string) : Promise<IAccount | undefined> {
+export async function getUserById(id: string) : Promise<IAccount | undefined> {
     return await getAccountById(id);
 }

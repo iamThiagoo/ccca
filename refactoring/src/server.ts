@@ -1,5 +1,5 @@
 import express from "express";
-import { createAccount, getAccountById } from "./account";
+import { createAccount, getUserById } from "./account";
 
 const app = express();
 app.use(express.json());
@@ -20,7 +20,7 @@ app.post("/signup", async function (req, res) {
 
 app.get('/account/:id', async function (req, res) {
 	const id = req.params.id
-	const account = await getAccountById(id)
+	const account = await getUserById(id)
 
 	if (!account) {
 		res.status(404).json({

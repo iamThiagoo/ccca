@@ -1,4 +1,14 @@
-import { validateCarPlate, validateEmail, validateName } from "../../src/helpers/validate";
+import { AccountDAODatabase } from "../../src/classes/dao/AccountDao";
+import { MailerGatewayMemory } from "../../src/classes/gateway/MailerGateway";
+import { SignUp } from "../../src/classes/SignUp";
+
+let signup: SignUp;
+
+beforeEach(() => {
+    const accountDAO = new AccountDAODatabase();
+    const mailerGateway = new MailerGatewayMemory();
+    signup = new SignUp(accountDAO, mailerGateway);
+});
 
 // Name
 test.each([
@@ -6,7 +16,7 @@ test.each([
     "Thiago Ferreira da Silva Júnior",
     "thiago ferreira"
 ])("Deve validar o nome do usuário %s", function (name: any) {
-    const isValid = validateName(name);
+    const isValid = signup.validateName(name);
     expect(isValid).toBe(true);
 });
 
@@ -16,7 +26,7 @@ test.each([
     "",
     "Thiago"
 ])("Não deve validar o nome do usuário %s", function (name: any) {
-    const isValid = validateName(name);
+    const isValid = signup.validateName(name);
     expect(isValid).toBe(false);
 });
 
@@ -27,7 +37,7 @@ test.each([
     "thiago.ferreira@gmail.com",
     "thiago+ferreira@gmail.com"
 ])("Deve validar o email %s", function (email: any) {
-    const isValid = validateEmail(email);
+    const isValid = signup.validateEmail(email);
     expect(isValid).toBe(true);
 });
 
@@ -38,7 +48,7 @@ test.each([
     "thiagoferreiragmail.com",
     "thiago@gmail"
 ])("Não deve validar o email %s", function (email: any) {
-    const isValid = validateEmail(email);
+    const isValid = signup.validateEmail(email);
     expect(isValid).toBe(false);
 });
 
@@ -49,7 +59,7 @@ test.each([
     "TCP-0225",
     "RCP-4311"
 ])("Deve validar a placa do carro %s", function (carPlate: any) {
-    const isValid = validateCarPlate(carPlate);
+    const isValid = signup.validateCarPlate(carPlate);
     expect(isValid).toBe(true);
 });
 
@@ -62,6 +72,6 @@ test.each([
     "RCP-43121",
     "1234-rcp"
 ])("Não deve validar a placa do carro %s", function (carPlate: any) {
-    const isValid = validateCarPlate(carPlate);
+    const isValid = signup.validateCarPlate(carPlate);
     expect(isValid).toBe(false);
 });
